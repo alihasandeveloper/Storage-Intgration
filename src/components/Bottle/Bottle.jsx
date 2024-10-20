@@ -9,7 +9,7 @@ const Bottle = ({ bottle, cartHandel }) => {
             <div className='bottle-cart'>
                 <h4>{name}</h4>
                 <img src={img} alt={name} />
-                <p>{price}</p>
+                <p>Price: ${price}</p>
                 <button onClick={() => cartHandel(bottle)}>Buy</button>
             </div>
 
