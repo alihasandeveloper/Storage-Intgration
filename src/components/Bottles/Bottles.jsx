@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import Bottle from '../Bottle/Bottle';
 import './Bottles.css'
-import {addToLS, getStoredCart} from "../../utilities/localStorage.js";
+import {addToLS, getStoredCart, removeFromLS} from "../../utilities/localStorage.js";
 import Cart from "../Cart/Cart.jsx";
 import PropTypes from "prop-types";
 
@@ -15,7 +15,6 @@ const Bottles = () => {
         // console.log(bottle.id);
         addToLS(bottle.id);
     }
-
     useEffect(() => {
         fetch('bottles.json')
             .then(res => res.json())
@@ -40,13 +39,22 @@ const Bottles = () => {
         }
     }, [bottles])
 
+    const handleRemoveFromCart = id => {
+        // visual cart remove
+        const remainingCart = cart.filter(bottle => bottle.id !== id);
+        setCart(remainingCart);
+        // remove from LS
+        removeFromLS(id);
+    }
+
+
     return (
         <div>
             <h4>Bottles {bottles.length}</h4>
-            <Cart cart={cart}/>
+            <Cart cart={cart} handelRemoveFormCart={handleRemoveFromCart}/>
             <div className='bottle-container'>
                 {
-                    bottles.map((bottle) => (<Bottle key={bottle.id} bottle={bottle} cartHandel={handelAddToCart}/>))
+                    bottles.map((bottle) => <Bottle key={bottle.id} bottle={bottle} cartHandel={handelAddToCart}/>)
                 }
             </div>
         </div>
